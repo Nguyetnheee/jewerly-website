@@ -8,6 +8,36 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/use-auth";
 
+function translateZodError(errorMessage: string): string {
+  try {
+    const errors = JSON.parse(errorMessage) as Array<{ path?: string; message?: string }>;
+    if (!Array.isArray(errors) || errors.length === 0) return "Vui lòng kiểm tra lại thông tin";
+
+    const fieldLabels: Record<string, string> = {
+      customerName: "Họ tên",
+      phone: "Số điện thoại",
+      email: "Email",
+      shippingAddress: "Địa chỉ giao hàng",
+    };
+
+    const first = errors[0];
+    const field = first.path ?? "";
+    const label = fieldLabels[field] ?? field;
+
+    if (first.message?.includes("at least")) {
+      if (field === "shippingAddress") return "Địa chỉ giao hàng phải có ít nhất 8 ký tự";
+      return `${label} phải có ít nhất 8 ký tự`;
+    }
+    if (first.message?.includes("valid")) {
+      if (field === "email") return "Email không hợp lệ";
+      if (field === "phone") return "Số điện thoại không hợp lệ";
+    }
+    return `${label} không hợp lệ`;
+  } catch {
+    return "Vui lòng kiểm tra lại thông tin";
+  }
+}
+
 export const Route = createFileRoute("/_authenticated/checkout")({
   head: () => ({ meta: [{ title: "Thanh toán — Pure Floral & Co." }] }),
   component: CheckoutPage,
@@ -38,7 +68,7 @@ function CheckoutPage() {
   const validateM = useMutation({
     mutationFn: () => validateFn({ data: { code: couponInput, subtotal } }),
     onSuccess: (d) => { setAppliedCoupon({ code: d.code, discount: d.discount }); toast.success(`Áp dụng mã: −${formatVND(d.discount)}`); },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toast.error(translateZodError(e.message)),
   });
   const placeM = useMutation({
     mutationFn: () =>
@@ -49,7 +79,7 @@ function CheckoutPage() {
         },
       }),
     onSuccess: (d) => { navigate({ to: "/order-success/$code", params: { code: d.orderCode } }); },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toast.error(translateZodError(e.message)),
   });
 
   if (cartQ.isLoading) return <div className="py-20 text-center">Đang tải...</div>;
