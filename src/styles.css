@@ -1,0 +1,167 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Pure Floral & Co. — Botanical Minimalist Luxe
+ * Locked tokens from the selected design direction.
+ */
+
+@theme inline {
+  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
+
+  --color-cream: #FCF9F5;
+  --color-cream-2: #F4EFE6;
+  --color-forest: #1A3A34;
+  --color-forest-2: #2A4F48;
+  --color-lotus: #E8B4B8;
+  --color-lotus-2: #F3D2D5;
+  --color-gold: #C5A059;
+  --color-gold-2: #E0C896;
+  --color-ink: #2A2520;
+  --color-mute: #8C857B;
+
+  /* shadcn-compatible mapping */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+}
+
+:root {
+  --radius: 0.25rem;
+  --background: #FCF9F5;
+  --foreground: #1A3A34;
+  --card: #FFFFFF;
+  --card-foreground: #1A3A34;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A3A34;
+  --primary: #1A3A34;
+  --primary-foreground: #FCF9F5;
+  --secondary: #F4EFE6;
+  --secondary-foreground: #1A3A34;
+  --muted: #F4EFE6;
+  --muted-foreground: #8C857B;
+  --accent: #E8B4B8;
+  --accent-foreground: #1A3A34;
+  --destructive: #B23A3A;
+  --destructive-foreground: #FCF9F5;
+  --border: rgba(26, 58, 52, 0.10);
+  --input: rgba(26, 58, 52, 0.15);
+  --ring: #C5A059;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html, body {
+    background-color: var(--color-cream);
+    color: var(--color-forest);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "ss02";
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background-color: var(--color-lotus);
+    color: var(--color-forest);
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+@utility eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-gold);
+}
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-forest);
+  color: var(--color-cream);
+  padding: 0.95rem 2.25rem;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: background-color 250ms ease, transform 250ms ease;
+  cursor: pointer;
+  &:hover { background-color: var(--color-gold); }
+  &:active { transform: translateY(1px); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+@utility btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-forest);
+  color: var(--color-forest);
+  padding: 0.9rem 2.25rem;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: background-color 250ms ease, color 250ms ease;
+  cursor: pointer;
+  &:hover { background-color: var(--color-forest); color: var(--color-cream); }
+}
+
+@utility btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-gold);
+  color: var(--color-forest);
+  padding: 0.95rem 2.25rem;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: background-color 250ms ease;
+  cursor: pointer;
+  &:hover { background-color: var(--color-cream); }
+}
+
+@utility surface-card {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(26, 58, 52, 0.06);
+  box-shadow: 0 1px 3px rgba(26, 58, 52, 0.04), 0 12px 32px -16px rgba(26, 58, 52, 0.08);
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@utility animate-fade-up { animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
